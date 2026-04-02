@@ -1,11 +1,13 @@
 #include "main.h"
 
+#define UNSUPPORTED_SPECIFIER (-2)
+
 /**
  * handle_specifier - dispatches a supported conversion specifier
  * @spec: conversion character
  * @args: variadic list
  *
- * Return: chars printed for this specifier, 0 if unsupported, or -1 on error
+ * Return: chars printed for this specifier, -2 if unsupported, or -1 on error
  */
 static int handle_specifier(char spec, va_list *args)
 {
@@ -22,7 +24,7 @@ static int handle_specifier(char spec, va_list *args)
 		if (types[i].specifier == spec)
 			return (types[i].fn(args));
 	}
-	return (0);
+	return (UNSUPPORTED_SPECIFIER);
 }
 
 /**
@@ -60,7 +62,7 @@ static int process_directive(const char *format, int *i,
 	written = handle_specifier(format[*i], args);
 	if (written == -1)
 		return (-1);
-	if (written == 0)
+	if (written == UNSUPPORTED_SPECIFIER)
 		return (print_unknown_specifier(format[*i], count));
 	*count += written;
 	return (0);
