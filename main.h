@@ -13,7 +13,8 @@ typedef struct type
 {
 	char specifier;
 	int (*fn)(va_list *);
-} typeuh;
+} 
+typeuh;
 
 int _printf(const char *format, ...);
 int _putchar(char c);
