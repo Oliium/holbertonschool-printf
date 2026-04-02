@@ -58,27 +58,28 @@ int print_percent(va_list *args)
 int print_int(va_list *args)
 {
 	int num = va_arg(*args, int);
+	long num_long = num;
 	int count = 0;
-	int temp;
+	long temp;
 	int digits;
-	int divisor;
+	long divisor;
 	int i;
 
-	if (num == 0)
+	if (num_long == 0)
 	{
 		return (_putchar('0'));
 	}
 
-	if (num < 0)
+	if (num_long < 0)
 	{
 		if (_putchar('-') == -1)
 			return (-1);
 		count++;
-		num = -num;
+		num_long = -num_long;
 	}
 
 	/* Calculate number of digits */
-	temp = num;
+	temp = num_long;
 	digits = 0;
 	while (temp > 0)
 	{
@@ -93,11 +94,11 @@ int print_int(va_list *args)
 
 	for (i = 0; i < digits; i++)
 	{
-		char digit = '0' + (num / divisor);
+		char digit = '0' + (num_long / divisor);
 		if (_putchar(digit) == -1)
 			return (-1);
 		count++;
-		num %= divisor;
+		num_long %= divisor;
 		divisor /= 10;
 	}
 
