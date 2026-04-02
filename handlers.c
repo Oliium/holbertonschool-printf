@@ -48,3 +48,58 @@ int print_percent(va_list *args)
 	(void)args;
 	return (_putchar('%'));
 }
+
+/**
+ * print_int - prints a signed integer
+ * @args: variadic list
+ *
+ * Return: number of characters printed
+ */
+int print_int(va_list *args)
+{
+	int num = va_arg(*args, int);
+	int count = 0;
+	int temp;
+	int digits;
+	int divisor;
+	int i;
+
+	if (num == 0)
+	{
+		return (_putchar('0'));
+	}
+
+	if (num < 0)
+	{
+		if (_putchar('-') == -1)
+			return (-1);
+		count++;
+		num = -num;
+	}
+
+	/* Calculate number of digits */
+	temp = num;
+	digits = 0;
+	while (temp > 0)
+	{
+		digits++;
+		temp /= 10;
+	}
+
+	/* Print digits from left to right */
+	divisor = 1;
+	for (i = 1; i < digits; i++)
+		divisor *= 10;
+
+	for (i = 0; i < digits; i++)
+	{
+		char digit = '0' + (num / divisor);
+		if (_putchar(digit) == -1)
+			return (-1);
+		count++;
+		num %= divisor;
+		divisor /= 10;
+	}
+
+	return (count);
+}
