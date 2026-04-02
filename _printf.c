@@ -26,6 +26,47 @@ static int handle_specifier(char spec, va_list *args)
 }
 
 /**
+ * print_unknown_specifier - prints '%' and unsupported specifier
+ * @spec: unsupported conversion character
+ * @count: total printed characters
+ *
+ * Return: 0 on success, -1 on error
+ */
+static int print_unknown_specifier(char spec, int *count)
+{
+	if (_putchar('%') == -1 || _putchar(spec) == -1)
+		return (-1);
+	*count += 2;
+	return (0);
+}
+
+/**
+ * process_directive - handles one conversion directive after '%'
+ * @format: format string
+ * @i: current index in format string
+ * @args: variadic list
+ * @count: total printed characters
+ *
+ * Return: 0 on success, -1 on error
+ */
+static int process_directive(const char *format, int *i,
+		va_list *args, int *count)
+{
+	int written;
+
+	(*i)++;
+	if (format[*i] == '\0')
+		return (-1);
+	written = handle_specifier(format[*i], args);
+	if (written == -1)
+		return (-1);
+	if (written == 0)
+		return (print_unknown_specifier(format[*i], count));
+	*count += written;
+	return (0);
+}
+
+/**
  * _printf - produces output according to a format string
  * @format: format string with supported conversions (%c, %s, %%)
  *
@@ -34,7 +75,8 @@ static int handle_specifier(char spec, va_list *args)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i, count, written;
+	int i;
+	int count;
 
 	if (format == NULL)
 		return (-1);
@@ -46,41 +88,18 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			written = _putchar(format[i]);
-			if (written == -1)
+			if (_putchar(format[i]) == -1)
 			{
 				va_end(args);
 				return (-1);
 			}
-			count += written;
+			count++;
 			continue;
 		}
-
-		i++;
-		if (format[i] == '\0')
+		if (process_directive(format, &i, &args, &count) == -1)
 		{
 			va_end(args);
 			return (-1);
-		}
-
-		written = handle_specifier(format[i], &args);
-		if (written == -1)
-		{
-			va_end(args);
-			return (-1);
-		}
-		if (written == 0)
-		{
-			if (_putchar('%') == -1 || _putchar(format[i]) == -1)
-			{
-				va_end(args);
-				return (-1);
-			}
-			count += 2;
-		}
-		else
-		{
-			count += written;
 		}
 	}
 

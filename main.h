@@ -9,11 +9,12 @@
  * @specifier: conversion character
  * @fn: pointer to the function that prints it
  */
+
 typedef struct type
 {
 	char specifier;
 	int (*fn)(va_list *);
-} 
+}
 typeuh;
 
 int _printf(const char *format, ...);
