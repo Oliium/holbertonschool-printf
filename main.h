@@ -10,12 +10,12 @@
  * @fn: pointer to the function that prints it
  */
 
-typedef struct type
+typedef struct specifier_func
 {
 	char specifier;
 	int (*fn)(va_list *);
 }
-typeuh;
+specifier_func;
 
 int _printf(const char *format, ...);
 int _putchar(char c);

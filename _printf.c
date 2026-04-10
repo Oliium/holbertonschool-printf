@@ -11,7 +11,7 @@
  */
 static int handle_specifier(char spec, va_list *args)
 {
-	typeuh types[] = {
+	specifier_func types[] = {
 		{'c', print_char},
 		{'s', print_string},
 		{'%', print_percent},
